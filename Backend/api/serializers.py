@@ -2,7 +2,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from .models import (
     Usuario, Campanha, Evento, Doacao, Ajuda, 
-    Instituicao, ApoioInstituicao
+    Instituicao, ApoioInstituicao, Comentario 
 )
 
 # --- 1. USUÁRIO & AUTH ---
@@ -64,12 +64,23 @@ class CampanhaListSerializer(serializers.ModelSerializer):
     def get_participantes_count(self, obj):
         return obj.participantes.count()
 
+class ComentarioSerializer(serializers.ModelSerializer):
+    usuario_username = serializers.ReadOnlyField(source='usuario.username')
+    
+    class Meta:
+        model = Comentario
+        fields = ['id', 'usuario_username', 'texto', 'data_criacao', 'campanha']
+        read_only_fields = ['data_criacao', 'usuario_username', 'campanha']
+
 # Para o Detalhe (Página individual)
 class CampanhaDetailSerializer(serializers.ModelSerializer):
     eventos = EventoSerializer(many=True, read_only=True)
     doacoes = DoacaoSerializer(many=True, read_only=True)
     apoios = ApoioInstituicaoSerializer(many=True, read_only=True, source='apoioinstituicao_set')
     
+    # ADICIONE ISTO:
+    comentarios = ComentarioSerializer(many=True, read_only=True)
+
     participantes_count = serializers.SerializerMethodField()
     participantes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
@@ -77,7 +88,7 @@ class CampanhaDetailSerializer(serializers.ModelSerializer):
         model = Campanha
         fields = [
             'id', 'titulo', 'descricao', 'data_inicio', 'data_fim', 'status', 'imagem_capa',
-            'eventos', 'doacoes', 'apoios', 
+            'eventos', 'doacoes', 'apoios', 'comentarios', # <-- ADICIONE 'comentarios' AQUI
             'participantes', 'participantes_count'
         ]
     

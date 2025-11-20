@@ -141,3 +141,22 @@ class Ajuda(models.Model):
 
     def __str__(self):
         return f"Pedido de {self.usuario.username} ({self.tipo})"
+
+class Comentario(models.Model):
+    campanha = models.ForeignKey(
+        Campanha, 
+        on_delete=models.CASCADE,
+        related_name='comentarios' # Para podermos acessar campanha.comentarios
+    )
+    usuario = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE
+    )
+    texto = models.TextField()
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-data_criacao'] # Os mais recentes aparecem primeiro
+
+    def __str__(self):
+        return f"Comentário de {self.usuario.username} em {self.campanha.titulo}"
