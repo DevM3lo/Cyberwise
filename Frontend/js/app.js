@@ -321,5 +321,16 @@ function setupRegistrationForm() {
 async function setupDonationForm() { /* ...código anterior... */ }
 function setupHelpForm() { /* ...código anterior... */ }
 async function fetchInstituicoes() { /* ...código anterior... */ }
-function setupInteractiveChecklist() { /* ...código anterior... */ }
+function setupInteractiveChecklist() {
+    const items = document.querySelectorAll('.checklist-category li');
+    
+    if (items.length === 0) return; // Se não houver itens, sai
+
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            // Alterna a classe 'checked' (que risca o texto e muda o ícone)
+            item.classList.toggle('checked');
+        });
+    });
+}
 async function fetchInstituicaoDetalhe() { /* ...código anterior... */ }
