@@ -152,87 +152,95 @@ async function fetchCampanhas(gridElement) {
     }
 }
 
+// No arquivo: frontend/js/app.js
+
 async function fetchCampanhaDetalhe() {
     try {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
         if (!id) throw new Error('ID não encontrado');
         
-        // Prepara Headers
         const headers = { 'Content-Type': 'application/json' };
         let user = null;
-        
-        // Se tiver token, busca o usuário atual para saber se ele participa
+
+        // 1. Buscar Usuário Logado
         if (AUTH_TOKEN) {
             headers['Authorization'] = `Token ${AUTH_TOKEN}`;
             try {
                 const uRes = await fetch(`${API_URL}/auth/user/`, { headers });
-                if (uRes.ok) user = await uRes.json();
-            } catch (e) { console.log('Erro ao buscar user', e); }
+                if (uRes.ok) {
+                    user = await uRes.json();
+                    // Garante que temos o ID correto
+                    user.id = user.pk || user.id;
+                }
+            } catch(e) { console.error(e); }
         }
         
-        // Busca Detalhes da Campanha
+        // 2. Buscar Campanha
         const response = await fetch(`${API_URL}/campanhas/${id}/`, { headers });
         if (!response.ok) throw new Error('Campanha não encontrada');
         const campanha = await response.json();
 
-        // Preenche HTML básico
+        // Preencher HTML
         document.title = campanha.titulo;
         document.getElementById('detail-title').innerText = campanha.titulo;
         document.getElementById('detail-description').innerText = campanha.descricao;
         document.getElementById('detail-status').innerText = campanha.status;
-        // (Datas omitidas para brevidade, adicione se quiser)
-
-        // Listas (Eventos, Doações, Apoios)
-        renderList('event-list', campanha.eventos, (item) => `
-            <div class="event-card"><h4>${item.titulo}</h4><p>${item.descricao}</p></div>
-        `, 'Nenhum evento.');
         
-        renderList('donation-list', campanha.doacoes, (item) => `
-            <div class="donation-card"><h4>R$ ${item.valor || 'Material'}</h4><p>${item.usuario_username || 'Anônimo'}</p></div>
-        `, 'Nenhuma doação.');
+        // Preencher Listas (Função auxiliar)
+        renderList('event-list', campanha.eventos, i => `<div class="event-card"><h4>${i.titulo}</h4><p>${i.descricao}</p></div>`, 'Sem eventos.');
+        renderList('donation-list', campanha.doacoes, i => `<div class="donation-card"><h4>R$ ${i.valor}</h4><p>${i.usuario_username || 'Anônimo'}</p></div>`, 'Sem doações.');
+        renderList('support-list', campanha.apoios, i => `<div class="support-card"><h4>${i.nome_instituicao}</h4><p>${i.tipo_apoio}</p></div>`, 'Sem apoio.');
 
-        renderList('support-list', campanha.apoios, (item) => `
-            <div class="support-card"><h4>${item.nome_instituicao}</h4><p>${item.tipo_apoio}</p></div>
-        `, 'Nenhum apoio.');
-
-        // Lógica do Botão PARTICIPAR (CORRIGIDA)
+        // 3. Lógica do Botão Participar
         const wrapper = document.getElementById('participate-wrapper');
+        
         if (user) {
-            // Verifica se o ID do usuário está na lista de participantes da campanha
-            // O endpoint /user/ retorna 'pk', a campanha retorna lista de IDs.
-            let isParticipating = campanha.participantes.includes(user.pk);
+            // Verifica se o usuário JÁ participa
+            let isParticipating = campanha.participantes.includes(user.id);
 
-            const renderButton = () => {
-                wrapper.innerHTML = `<button id="p-btn" class="btn-primary">${isParticipating ? 'Sair da Campanha' : 'Participar'}</button>`;
-                // Re-atribui o evento de clique ao novo botão
-                document.getElementById('p-btn').onclick = handleParticipateClick;
+            // Função para desenhar o botão
+            const renderBtn = () => {
+                const btnText = isParticipating ? 'Sair da Campanha' : 'Participar desta Campanha';
+                const btnClass = isParticipating ? 'btn-secondary participate-btn' : 'btn-primary';
+                
+                wrapper.innerHTML = `<button id="p-btn" class="${btnClass}">${btnText}</button>`;
+                
+                // Adiciona o evento de clique ao NOVO botão
+                document.getElementById('p-btn').onclick = handleClick;
             };
 
-            const handleParticipateClick = async (e) => {
+            // Função do clique
+            const handleClick = async (e) => {
                 e.preventDefault();
                 const btn = e.target;
                 btn.disabled = true;
                 btn.innerText = 'Processando...';
 
                 try {
-                    const res = await fetch(`${API_URL}/campanhas/${id}/participar/`, {
+                    // Faz o pedido ao backend
+                    const postResp = await fetch(`${API_URL}/campanhas/${id}/participar/`, {
                         method: 'POST',
-                        headers: { 'Authorization': `Token ${AUTH_TOKEN}` } // Sem body, sem Content-Type JSON
+                        headers: { 'Authorization': `Token ${AUTH_TOKEN}` } // Sem Content-Type
                     });
-                    if (!res.ok) throw new Error('Erro ao participar');
-                    
-                    // Inverte o estado localmente e re-renderiza o botão
+
+                    if (!postResp.ok) {
+                        const err = await postResp.json();
+                        throw new Error(err.detail || 'Erro ao participar');
+                    }
+
+                    // Sucesso: Inverte o estado e redesenha o botão
                     isParticipating = !isParticipating;
-                    renderButton(); 
+                    renderBtn();
 
                 } catch (err) {
-                    alert('Erro: ' + err.message);
-                    renderButton(); // Restaura o botão
+                    console.error(err);
+                    wrapper.insertAdjacentHTML('beforeend', `<p style="color:red">${err.message}</p>`);
+                    renderBtn(); // Restaura o botão em caso de erro
                 }
             };
 
-            renderButton(); // Renderiza a primeira vez
+            renderBtn(); // Desenha o botão inicial
 
         } else {
             wrapper.innerHTML = `<p>Faça <a href="login.html">login</a> para participar.</p>`;
@@ -241,6 +249,17 @@ async function fetchCampanhaDetalhe() {
     } catch (error) {
         console.error(error);
         document.querySelector('.detail-content').innerHTML = '<h2>Erro ao carregar campanha.</h2>';
+    }
+}
+
+// Função auxiliar que faltava no seu código anterior
+function renderList(id, data, template, emptyMsg) {
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(data && data.length > 0) {
+        el.innerHTML = data.map(template).join('');
+    } else {
+        el.innerHTML = `<p>${emptyMsg}</p>`;
     }
 }
 
