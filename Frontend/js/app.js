@@ -278,6 +278,7 @@ function renderList(elementId, dataArray, templateFn, emptyMsg) {
 
 function setupLoginForm() {
     const form = document.getElementById('login-form');
+    const msgEl = document.getElementById('form-message');
     if (!form) return;
     
     form.addEventListener('submit', async (e) => {
@@ -291,20 +292,29 @@ function setupLoginForm() {
                 body: JSON.stringify(data)
             });
             const json = await res.json();
-            if (!res.ok) throw new Error(json.non_field_errors || 'Erro no login');
+            if(!res.ok) {
+                // Mostra o erro real do backend (ex: senha errada)
+                throw new Error(json.non_field_errors || json.detail || 'Erro ao fazer login.');
+            }
 
             localStorage.setItem('authToken', json.key);
+            msgEl.className = 'success';
+            msgEl.innerText = 'Login sucesso! Redirecionando...';
+            msgEl.style.display = 'block';
             window.location.href = 'index.html'; // Redireciona para a home
+            setTimeout(() => { window.location.replace('index.html'); }, 1000);
 
         } catch (err) {
-            document.getElementById('form-message').innerText = err.message;
-            document.getElementById('form-message').style.display = 'block';
+            msgEl.className = 'error';
+            msgEl.innerText = err.message;
+            msgEl.style.display = 'block';
         }
     });
 }
 
 function setupRegistrationForm() {
     const form = document.getElementById('register-form');
+    const msgEl = document.getElementById('form-message');
     if (!form) return;
 
     form.addEventListener('submit', async (e) => {
@@ -324,12 +334,23 @@ function setupRegistrationForm() {
                 body: JSON.stringify(data)
             });
             const json = await res.json();
-            if (!res.ok) throw new Error('Erro no registro');
+            if (!res.ok) {
+                // Tratamento de erro detalhado
+                let msg = "Erro no registro: ";
+                if (json.email) msg += "Email inválido ou já em uso. ";
+                if (json.password) msg += "Senha fraca. ";
+                if (json.username) msg += "Nome de usuário já existe. ";
+                // Se não for nenhum desses, mostra o JSON cru para debug
+                if (!json.email && !json.password && !json.username) msg += JSON.stringify(json);
+                
+                throw new Error(msg);
+            }
 
             alert('Conta criada! Faça login.');
             window.location.href = 'login.html';
 
         } catch (err) {
+            alert(err.message);
             alert('Erro ao criar conta. Verifique os dados.');
         }
     });
@@ -337,19 +358,204 @@ function setupRegistrationForm() {
 
 // (setupDonationForm, setupHelpForm, fetchInstituicoes, setupInteractiveChecklist, fetchInstituicaoDetalhe mantêm-se iguais às versões anteriores que funcionavam)
 // Para garantir que não falte nada, adicionei stubs funcionais abaixo. Se já tiver o código delas, mantenha.
-async function setupDonationForm() { /* ...código anterior... */ }
-function setupHelpForm() { /* ...código anterior... */ }
-async function fetchInstituicoes() { /* ...código anterior... */ }
+async function setupDonationForm() {
+    const form = document.getElementById('donation-form');
+    if (!form) return; // Se não estiver na página de doação, sai
+
+    const selectCampanha = document.getElementById('campanha');
+    const selectTipo = document.getElementById('tipo');
+    const valorGroup = document.getElementById('valor-group');
+    const msgEl = document.getElementById('form-message');
+    
+    // Elementos de input direto (para evitar o bug do FormData)
+    const inputValor = document.getElementById('valor');
+    const inputDescricao = document.getElementById('descricao');
+
+    // 1. Preenche a lista de campanhas ativas
+    try {
+        const response = await fetch(`${API_URL}/campanhas/?status=ativa`);
+        const campanhas = await response.json();
+        
+        campanhas.forEach(campanha => {
+            const option = new Option(campanha.titulo, campanha.id);
+            selectCampanha.add(option);
+        });
+
+        // POLIMENTO EXTRA: Verifica se viemos de um link "Doar para esta campanha"
+        // Ex: doar.html?campanha=5
+        const params = new URLSearchParams(window.location.search);
+        const preSelectedId = params.get('campanha');
+        if (preSelectedId) {
+            selectCampanha.value = preSelectedId;
+        }
+
+    } catch (error) {
+        console.error('Falha ao buscar campanhas para o form:', error);
+    }
+
+    // 2. Lógica visual: Esconde o valor se for doação material
+    selectTipo.addEventListener('change', () => {
+        if (selectTipo.value === 'financeira') {
+            valorGroup.style.display = 'block';
+            inputValor.required = true;
+        } else {
+            valorGroup.style.display = 'none';
+            inputValor.required = false;
+            inputValor.value = ''; // Limpa o valor
+        }
+    });
+
+    // 3. Envio do Formulário
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Lógica para limpar os dados antes de enviar
+        let campanhaId = selectCampanha.value;
+        // Se o valor for vazio (Doação Geral), envia null para o backend
+        if (campanhaId === "") { 
+            campanhaId = null; 
+        }
+
+        let valorDoacao = inputValor.value;
+        // Se for material, o valor monetário é nulo
+        if (selectTipo.value === 'material' || valorDoacao === "") { 
+            valorDoacao = null; 
+        }
+
+        // Monta o objeto JSON manualmente (Correção do Bug)
+        const data = {
+            tipo: selectTipo.value,
+            campanha: campanhaId,
+            valor: valorDoacao,
+            descricao: inputDescricao.value
+            // usuario é tratado no backend ou enviado como null (anônimo)
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/doacoes/`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    // Se tiver token, envia para registrar no nome do usuário
+                    ...(AUTH_TOKEN ? { 'Authorization': `Token ${AUTH_TOKEN}` } : {})
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // Transforma o erro do backend em texto legível
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            // Sucesso!
+            form.reset();
+            valorGroup.style.display = 'block'; // Reseta visual
+            msgEl.className = 'success';
+            msgEl.innerText = 'Doação registrada com sucesso! Muito obrigado.';
+            msgEl.style.display = 'block';
+
+        } catch (error) {
+            console.error('Erro ao enviar doação:', error);
+            msgEl.className = 'error';
+            msgEl.innerText = 'Houve um erro ao registrar sua doação. Verifique os dados.';
+            msgEl.style.display = 'block';
+        }
+    });
+}
+
+async function fetchInstituicoes() {
+    const listEl = document.getElementById('instituicoes-list');
+    
+    // Se não estiver na página 'acoes.html', este elemento não existe, então sai da função
+    if (!listEl) return;
+
+    try {
+        const response = await fetch(`${API_URL}/instituicoes/`);
+        
+        if (!response.ok) throw new Error('Erro ao buscar instituições');
+        
+        const instituicoes = await response.json();
+        
+        // Limpa o texto "A carregar..."
+        listEl.innerHTML = ''; 
+        
+        // Se a lista estiver vazia
+        if (instituicoes.length === 0) {
+            listEl.innerHTML = '<p>Nenhuma instituição parceira registada no momento.</p>';
+            return;
+        }
+
+        // Gera a lista de links
+        instituicoes.forEach(inst => {
+            const linkHTML = `
+            <li>
+                <a href="instituicao-detalhe.html?id=${inst.id}">
+                    ${inst.nome}
+                    <span>${inst.email || 'Ver detalhes'} &rarr;</span>
+                </a>
+            </li>
+            `;
+            listEl.insertAdjacentHTML('beforeend', linkHTML);
+        });
+
+    } catch (error) {
+        console.error('Falha ao carregar instituições:', error);
+        listEl.innerHTML = '<p>Não foi possível carregar as instituições no momento.</p>';
+    }
+}
+
 function setupInteractiveChecklist() {
+    // Seleciona todos os itens da lista dentro das categorias do checklist
     const items = document.querySelectorAll('.checklist-category li');
     
-    if (items.length === 0) return; // Se não houver itens, sai
+    // Se não encontrar itens (não estamos na página certa), sai da função
+    if (items.length === 0) return;
 
     items.forEach(item => {
+        // Adiciona o evento de clique em cada item
         item.addEventListener('click', () => {
-            // Alterna a classe 'checked' (que risca o texto e muda o ícone)
+            // Alterna a classe 'checked'
+            // (O CSS que adicionámos vai riscar o texto e mostrar o ✔)
             item.classList.toggle('checked');
         });
     });
 }
-async function fetchInstituicaoDetalhe() { /* ...código anterior... */ }
+
+async function fetchInstituicaoDetalhe() {
+    // Seleciona o container principal para poder mostrar erros se necessário
+    const detailContainer = document.querySelector('.detail-content');
+    
+    // Se não estiver na página de detalhes, sai da função
+    if (!detailContainer) return;
+
+    try {
+        // 1. Pega o ID da URL (ex: instituicao-detalhe.html?id=1)
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        
+        if (!id) throw new Error('ID da instituição não encontrado na URL.');
+
+        // 2. Chama a API
+        const response = await fetch(`${API_URL}/instituicoes/${id}/`);
+        
+        if (!response.ok) throw new Error('Instituição não encontrada.');
+        
+        const inst = await response.json();
+
+        // 3. Preenche os dados na tela
+        document.title = `${inst.nome} - CyberWise`; // Atualiza o título da aba
+        
+        // Preenche os campos de texto
+        // Usamos '||' para colocar um texto padrão caso o campo venha vazio do banco
+        document.getElementById('detail-nome').innerText = inst.nome;
+        document.getElementById('detail-email').innerText = inst.email || 'Não informado';
+        document.getElementById('detail-telefone').innerText = inst.telefone || 'Não informado';
+        document.getElementById('detail-endereco').innerText = inst.endereco || 'Não informado';
+
+    } catch (error) {
+        console.error('Falha ao carregar instituição:', error);
+        // Mostra uma mensagem de erro amigável para o usuário
+        detailContainer.innerHTML = '<h2>Erro ao carregar</h2><p>Não foi possível encontrar esta instituição. Tente voltar à página anterior.</p>';
+    }
+}
