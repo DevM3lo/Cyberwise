@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CyberWise</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo">CyberWise</a>
+        <div class="menu-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="participar.html">CAMPANHAS</a></li>
+                <li><a href="checklist.html">CHECKLIST</a></li>
+                <li><a href="acoes.html">AÇÕES</a></li>
+                <li><a href="doar.html" class="btn-primary">Faça uma Doação</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Login</h1>
+                <p>Bem-vindo de volta!</p>
+            </div>
+        </section>
+
+        <section class="section donation-form-section">
+            <div class="container">
+                <form id="login-form" class="form-styled">
+                    <h2>Entrar na sua Conta</h2>
+                    
+                    <div id="form-message" style="display:none;"></div>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit" class="btn-primary">Entrar</button>
+                    
+                    <p class="form-link">Não tem uma conta? <a href="register.html">Crie uma agora</a></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>©2024 Mobilize. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js?v=FINAL_V2"></script>
+</body>
+</html>

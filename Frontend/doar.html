@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faça uma Doação - CyberWise</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="main-header">
+    
+    <a href="index.html" class="logo">CyberWise</a>
+
+    <div class="menu-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="participar.html">CAMPANHAS</a></li>
+            <li><a href="checklist.html">CHECKLIST</a></li>
+            <li><a href="acoes.html">AÇÕES</a></li>
+            <li><a href="doar.html" class="btn-primary">Faça uma Doação</a></li>
+        </ul>
+    </nav>
+
+</header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Faça a Diferença</h1>
+                <p>Sua contribuição ajuda a impulsionar nossas campanhas.</p>
+            </div>
+        </section>
+
+        <section class="section donation-form-section">
+            <div class="container">
+                <form id="donation-form" class="form-styled">
+                    <h2>Detalhes da Doação</h2>
+                    
+                    <div id="form-message" style="display:none;"></div>
+
+                    <label for="tipo">Tipo de Doação</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="financeira">Financeira (Valor)</option>
+                        <option value="material">Material (Ex: Equipamento)</option>
+                    </select>
+
+                    <label for="campanha">Campanha Específica (Opcional)</label>
+                    <select id="campanha" name="campanha">
+                        <option value="">-- Doação Geral --</option>
+                        </select>
+
+                    <div id="valor-group">
+                        <label for="valor">Valor (R$)</label>
+                        <input type="number" id="valor" name="valor" step="0.01" min="1.00" placeholder="Ex: 50,00">
+                    </div>
+
+                    <label for="descricao">Descrição (Obrigatório se for 'Material')</label>
+                    <textarea id="descricao" name="descricao" rows="4" placeholder="Ex: 2 notebooks usados"></textarea>
+                    
+                    <button type="submit" class="btn-primary">Enviar Doação</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>©2024 Mobilize. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js?v=FINAL_V2"></script>
+</body>
+</html>

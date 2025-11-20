@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - CyberWise</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo">CyberWise</a>
+        <div class="menu-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="participar.html">CAMPANHAS</a></li>
+                <li><a href="checklist.html">CHECKLIST</a></li>
+                <li><a href="acoes.html">AÇÕES</a></li>
+                <li><a href="doar.html" class="btn-primary">Faça uma Doação</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Criar Nova Conta</h1>
+                <p>Junte-se ao movimento e faça a diferença.</p>
+            </div>
+        </section>
+
+        <section class="section donation-form-section">
+            <div class="container">
+                <form id="register-form" class="form-styled">
+                    <h2>Seus Dados</h2>
+                    
+                    <div id="form-message" style="display:none;"></div>
+
+                    <label for="username">Nome de Usuário</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                    
+                    <label for="password2">Confirme a Senha</label>
+                    <input type="password" id="password2" name="password2" required>
+                    
+                    <label for="tipo">Eu quero ser um...</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="visitante">Visitante</option>
+                        <option value="voluntario">Voluntário</option>
+                        <option value="doador">Doador</option>
+                    </select>
+
+                    <button type="submit" class="btn-primary">Criar Conta</button>
+                    
+                    <p class="form-link">Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>©2024 Mobilize. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js?v=FINAL_V2"></script>
+</body>
+</html>

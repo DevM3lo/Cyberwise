@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedir Ajuda - CyberWise</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo">CyberWise</a>
+        <div class="menu-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="main-nav">
+            <ul></ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Pedir Ajuda</h1>
+                <p>Conecte-se com voluntários dispostos a ajudar.</p>
+            </div>
+        </section>
+
+        <section class="section donation-form-section">
+            <div class="container">
+                <form id="help-form" class="form-styled">
+                    <h2>Detalhes do Pedido</h2>
+                    
+                    <div id="form-message" style="display:none;"></div>
+
+                    <label for="tipo">Tipo de Ajuda Necessária</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="emocional">Emocional</option>
+                        <option value="tecnica">Técnica (Ex: configurar algo)</option>
+                        <option value="informativa">Informativa (Ex: dúvidas)</option>
+                    </select>
+
+                    <label for="descricao">Descreva seu pedido</label>
+                    <textarea id="descricao" name="descricao" rows="6" placeholder="Por favor, detalhe o que você precisa..." required></textarea>
+
+                    <button type="submit" class="btn-primary">Enviar Pedido de Ajuda</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>©2024 Mobilize. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js?v=FINAL_V2"></script>
+</body>
+</html>
