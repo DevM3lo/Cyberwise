@@ -3,13 +3,13 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from .models import Campanha, Usuario, Evento, Doacao, Ajuda, Instituicao, ApoioInstituicao, Comentario
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from .models import Campanha, Usuario, Evento, Doacao, Ajuda, Instituicao, ApoioInstituicao, Comentario, Depoimento
 from .serializers import (
     CampanhaListSerializer, CampanhaDetailSerializer, 
     UsuarioSerializer, EventoSerializer, DoacaoSerializer, 
     AjudaSerializer, InstituicaoSerializer, ApoioInstituicaoSerializer,
-    ComentarioSerializer
+    ComentarioSerializer, DepoimentoSerializer
 )
 
 class CampanhaViewSet(viewsets.ModelViewSet):
@@ -136,3 +136,9 @@ class ComentarioViewSet(viewsets.ModelViewSet):
         campanha = Campanha.objects.get(pk=campanha_id)
         
         serializer.save(usuario=self.request.user, campanha=campanha)
+
+class DepoimentoViewSet(viewsets.ReadOnlyModelViewSet):
+    # ReadOnly porque só queremos MOSTRAR na home, ninguém cria pelo site
+    queryset = Depoimento.objects.all()
+    serializer_class = DepoimentoSerializer
+    permission_classes = [AllowAny] # Público: todo mundo pode ver

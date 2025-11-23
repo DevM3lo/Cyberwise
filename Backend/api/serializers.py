@@ -2,7 +2,8 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from .models import (
     Usuario, Campanha, Evento, Doacao, Ajuda, 
-    Instituicao, ApoioInstituicao, Comentario 
+    Instituicao, ApoioInstituicao, Comentario,
+    Depoimento
 )
 
 # --- 1. USUÁRIO & AUTH ---
@@ -94,3 +95,8 @@ class CampanhaDetailSerializer(serializers.ModelSerializer):
     
     def get_participantes_count(self, obj):
         return obj.participantes.count()
+
+class DepoimentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Depoimento
+        fields = '__all__'

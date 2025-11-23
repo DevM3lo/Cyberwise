@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import (
     Usuario, Campanha, Evento, Doacao, Ajuda, 
-    Instituicao, ApoioInstituicao, Comentario
+    Instituicao, ApoioInstituicao, Comentario,
+    Depoimento
 )
 
 # Inlines
@@ -29,3 +30,4 @@ admin.site.register(Instituicao)
 # ESTA LINHA É ESSENCIAL PARA APARECER NO ADMIN:
 admin.site.register(Ajuda)
 admin.site.register(Comentario)
+admin.site.register(Depoimento)

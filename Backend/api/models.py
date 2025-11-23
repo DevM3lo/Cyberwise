@@ -160,3 +160,13 @@ class Comentario(models.Model):
 
     def __str__(self):
         return f"Comentário de {self.usuario.username} em {self.campanha.titulo}"
+    
+class Depoimento(models.Model):
+    nome = models.CharField(max_length=100)
+    texto = models.TextField()
+    # Foto é opcional. Se não tiver, usamos uma genérica no front.
+    foto = models.ImageField(upload_to='depoimentos/', null=True, blank=True)
+    cargo = models.CharField(max_length=100, blank=True, help_text="Ex: Estudante, Voluntário")
+    
+    def __str__(self):
+        return self.nome
