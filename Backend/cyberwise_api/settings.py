@@ -123,20 +123,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 if 'DATABASE_URL' in os.environ:
-    # Se estiver na nuvem (Render), usa a URL do Postgres
+    # Configuração para o Render (PostgreSQL)
     DATABASES = {
         'default': dj_database_url.config(
-            conn_max_age=600,
-            conn_health_check=True,
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+            # NÃO COLOQUE MAIS NADA AQUI DENTRO
         )
     }
-    # Força a segurança (HTTPS) para o Render
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
 else:
-    # Se estiver no seu computador (Local), usa SQLite
+    # Configuração Local (SQLite)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
