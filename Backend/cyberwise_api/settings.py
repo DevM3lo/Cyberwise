@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'cloudinary_storage',
+    'cloudinary',
+
     # Pacotes Externos
     'corsheaders',
     'rest_framework',
@@ -148,3 +150,15 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'Root', 
+    'API_KEY': '359775823848653', 
+    'API_SECRET': 'RIoAMXAX4ZiDz9BKvpRn72Kn_Nk'
+}
+
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
