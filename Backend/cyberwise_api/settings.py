@@ -151,14 +151,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'Root', 
-    'API_KEY': '359775823848653', 
-    'API_SECRET': 'RIoAMXAX4ZiDz9BKvpRn72Kn_Nk'
-}
+if 'CLOUDINARY_URL' in os.environ:
+    CLOUDINARY_STORAGE = {
+        'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Se NÃO existir (no seu PC), usa pasta local normal
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'mediafiles'
