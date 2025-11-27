@@ -136,6 +136,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+# IMPEDE CRASH DE EMAIL NO RENDER
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'api.serializers.UsuarioSerializer',

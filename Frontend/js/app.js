@@ -1,8 +1,8 @@
 // No arquivo: frontend/js/app.js
 
 // --- CONSTANTES GLOBAIS ---
-const API_URL = 'http://127.0.0.1:8000/api';
-const BASE_URL = 'http://127.0.0.1:8000'; 
+const API_URL = 'https://cyberwise-api.onrender.com/api';
+const BASE_URL = 'https://cyberwise-api.onrender.com'; 
 const AUTH_TOKEN = localStorage.getItem('authToken');
 
 document.addEventListener('DOMContentLoaded', () => {
