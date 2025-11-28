@@ -1348,63 +1348,124 @@ img {
     font-size: 14px;
 }
 
+Tem razão! A responsividade que fizemos foi um "tapa-buraco" rápido e, em telas menores (celulares de verdade, não só tablets), as coisas podem ficar espremidas, com fontes gigantes ou elementos saindo da tela.
+
+Vamos fazer um "Polimento Premium" no CSS Mobile.
+
+Vou te passar um bloco de CSS que você deve substituir toda a parte de @media (max-width: 768px) que colocamos antes. Esse novo código é mais detalhado e trata fontes, espaçamentos, o menu hambúrguer e os formulários com muito mais cuidado.
+
+🎨 A Correção (No styles.css)
+Abra o frontend/css/styles.css.
+
+Vá até o final do arquivo.
+
+Apague todo o bloco @media que adicionamos antes.
+
+Cole este novo bloco robusto no lugar:
+
+CSS
+
 /* =========================================
-   📱 RESPONSIVIDADE (TABLETS E CELULARES)
+   📱 RESPONSIVIDADE PREMIUM (MOBILE)
    ========================================= */
 
 @media (max-width: 768px) {
 
-    /* --- 1. LAYOUT GERAL --- */
-    .container {
-        padding: 0 20px; /* Margem lateral para não colar na borda */
-        width: 100%;
+    /* --- 1. ESTRUTURA & FONTE --- */
+    body {
+        padding-top: 70px; /* Espaço para o header fixo */
+        font-size: 14px;   /* Reduz fonte base para caber mais */
     }
 
-    h1 { font-size: 32px; }
-    h2 { font-size: 26px; }
+    .container {
+        padding: 0 20px;
+        width: 100%;
+        max-width: 100%; /* Garante que não vaze */
+    }
+
+    h1 { font-size: 28px !important; line-height: 1.2; }
+    h2 { font-size: 22px !important; }
+    h3 { font-size: 18px !important; }
+    
     .section { padding: 40px 0; }
 
-    /* --- 2. HEADER E MENU MOBILE --- */
+    /* --- 2. HEADER & MENU (Hambúrguer) --- */
     .main-header {
-        padding: 0 20px;
+        padding: 0 15px;
         height: 70px;
         justify-content: space-between;
     }
 
+    .main-header .logo {
+        font-size: 20px; /* Logo um pouco menor */
+    }
+
     .menu-hamburger {
-        display: flex; /* Mostra o ícone no celular */
-        z-index: 1100; /* Fica acima de tudo */
+        display: flex;
+        z-index: 1100;
+        /* Ajuste fino do ícone */
+        margin-right: 0; 
     }
 
     .main-nav {
         position: fixed;
         top: 0;
-        right: -100%; /* Começa escondido fora da tela */
-        width: 80%;   /* Ocupa 80% da largura */
-        height: 100vh; /* Altura total */
+        right: -100%;
+        width: 85%; /* Deixa um pedacinho da tela de fundo visível */
+        height: 100vh;
         background-color: #FFFFFF;
         flex-direction: column;
-        padding-top: 100px; /* Espaço para não ficar embaixo do logo */
-        transition: 0.3s ease-in-out; /* Animação suave */
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        padding-top: 90px;
+        padding-left: 30px;
+        transition: right 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+        box-shadow: -5px 0 20px rgba(0,0,0,0.15);
         z-index: 1000;
     }
 
-    /* Classe adicionada pelo JS quando clica no hambúrguer */
     .main-nav.active {
-        right: 0; /* Desliza para dentro */
+        right: 0;
     }
 
     .main-nav ul {
-        flex-direction: column; /* Links um embaixo do outro */
-        gap: 30px;
+        flex-direction: column;
+        align-items: flex-start; /* Alinha à esquerda */
+        gap: 25px;
     }
 
     .main-nav a {
-        font-size: 20px; /* Links maiores para tocar com o dedo */
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0; /* Linha separadora sutil */
     }
 
-    /* --- 3. GRIDS (TRANSFORMA TUDO EM 1 COLUNA) --- */
+    .main-nav .btn-primary {
+        margin-top: 10px;
+        text-align: center;
+        width: 90%; /* Botão largo no menu */
+    }
+
+    /* --- 3. HOME PAGE --- */
+    .hero-banner {
+        height: auto;
+        min-height: 400px;
+        padding: 60px 20px;
+        text-align: center;
+        background-position: center;
+    }
+
+    .hero-box {
+        padding: 30px 20px;
+        width: 100%;
+    }
+
+    .hero-box h1 { font-size: 32px !important; }
+    .hero-box p { font-size: 16px; }
+
+    /* --- 4. GRIDS (Cards um embaixo do outro) --- */
     .campaign-grid,
     .testimonials-grid,
     .impact-grid,
@@ -1412,44 +1473,56 @@ img {
     .faq-grid,
     .actions-grid,
     .profile-grid {
-        grid-template-columns: 1fr; /* Força uma coluna única */
-        gap: 20px;
+        grid-template-columns: 1fr !important; /* Força coluna única */
+        gap: 25px;
     }
 
-    /* --- 4. HOME PAGE --- */
-    .hero-banner {
-        height: auto;
-        min-height: 500px;
-        padding: 60px 20px;
+    /* Ajuste de Imagens nos Cards */
+    .campaign-card .campaign-image {
+        height: 180px; /* Altura fixa para não ficar gigante */
     }
 
-    .hero-box h1 {
-        font-size: 36px;
+    /* --- 5. FORMULÁRIOS (Melhor uso de espaço) --- */
+    .form-styled {
+        padding: 20px;
+    }
+    
+    .form-styled input, 
+    .form-styled select, 
+    .form-styled textarea {
+        font-size: 16px; /* Evita zoom automático no iPhone */
+        padding: 12px;
     }
 
-    .share-grid {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    /* --- 5. PÁGINAS DE DETALHE --- */
+    /* --- 6. PÁGINA DE DETALHES --- */
     .detail-content {
-        padding: 20px; /* Menos padding interno */
+        padding: 20px;
     }
-
+    
     .detail-dates {
         flex-direction: column;
         gap: 10px;
+        text-align: left;
     }
 
-    /* --- 6. FORMULÁRIOS --- */
-    .form-styled {
-        padding: 25px;
+    .event-card, .donation-card, .support-card {
+        padding: 15px;
+    }
+
+    /* Botões full-width no mobile são mais fáceis de clicar */
+    .participate-cta button {
+        width: 100%;
     }
 
     /* --- 7. MODAL --- */
     .modal-content {
-        width: 95%;
+        width: 90%;
         padding: 20px;
+        margin: 0 auto;
+    }
+    
+    .pix-key {
+        font-size: 16px; /* Reduz fonte para caber */
+        word-break: break-all; /* Quebra se for longo */
     }
 }
