@@ -1347,3 +1347,109 @@ img {
     padding: 5px 15px;
     font-size: 14px;
 }
+
+/* =========================================
+   📱 RESPONSIVIDADE (TABLETS E CELULARES)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* --- 1. LAYOUT GERAL --- */
+    .container {
+        padding: 0 20px; /* Margem lateral para não colar na borda */
+        width: 100%;
+    }
+
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    .section { padding: 40px 0; }
+
+    /* --- 2. HEADER E MENU MOBILE --- */
+    .main-header {
+        padding: 0 20px;
+        height: 70px;
+        justify-content: space-between;
+    }
+
+    .menu-hamburger {
+        display: flex; /* Mostra o ícone no celular */
+        z-index: 1100; /* Fica acima de tudo */
+    }
+
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Começa escondido fora da tela */
+        width: 80%;   /* Ocupa 80% da largura */
+        height: 100vh; /* Altura total */
+        background-color: #FFFFFF;
+        flex-direction: column;
+        padding-top: 100px; /* Espaço para não ficar embaixo do logo */
+        transition: 0.3s ease-in-out; /* Animação suave */
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    /* Classe adicionada pelo JS quando clica no hambúrguer */
+    .main-nav.active {
+        right: 0; /* Desliza para dentro */
+    }
+
+    .main-nav ul {
+        flex-direction: column; /* Links um embaixo do outro */
+        gap: 30px;
+    }
+
+    .main-nav a {
+        font-size: 20px; /* Links maiores para tocar com o dedo */
+    }
+
+    /* --- 3. GRIDS (TRANSFORMA TUDO EM 1 COLUNA) --- */
+    .campaign-grid,
+    .testimonials-grid,
+    .impact-grid,
+    .participation-grid,
+    .faq-grid,
+    .actions-grid,
+    .profile-grid {
+        grid-template-columns: 1fr; /* Força uma coluna única */
+        gap: 20px;
+    }
+
+    /* --- 4. HOME PAGE --- */
+    .hero-banner {
+        height: auto;
+        min-height: 500px;
+        padding: 60px 20px;
+    }
+
+    .hero-box h1 {
+        font-size: 36px;
+    }
+
+    .share-grid {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* --- 5. PÁGINAS DE DETALHE --- */
+    .detail-content {
+        padding: 20px; /* Menos padding interno */
+    }
+
+    .detail-dates {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* --- 6. FORMULÁRIOS --- */
+    .form-styled {
+        padding: 25px;
+    }
+
+    /* --- 7. MODAL --- */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}
