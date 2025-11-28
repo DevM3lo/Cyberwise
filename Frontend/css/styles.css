@@ -1348,26 +1348,6 @@ img {
     font-size: 14px;
 }
 
-Tem razão! A responsividade que fizemos foi um "tapa-buraco" rápido e, em telas menores (celulares de verdade, não só tablets), as coisas podem ficar espremidas, com fontes gigantes ou elementos saindo da tela.
-
-Vamos fazer um "Polimento Premium" no CSS Mobile.
-
-Vou te passar um bloco de CSS que você deve substituir toda a parte de @media (max-width: 768px) que colocamos antes. Esse novo código é mais detalhado e trata fontes, espaçamentos, o menu hambúrguer e os formulários com muito mais cuidado.
-
-🎨 A Correção (No styles.css)
-Abra o frontend/css/styles.css.
-
-Vá até o final do arquivo.
-
-Apague todo o bloco @media que adicionamos antes.
-
-Cole este novo bloco robusto no lugar:
-
-CSS
-
-/* =========================================
-   📱 RESPONSIVIDADE PREMIUM (MOBILE)
-   ========================================= */
 
 @media (max-width: 768px) {
 
