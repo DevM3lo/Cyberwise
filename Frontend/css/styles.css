@@ -1349,57 +1349,25 @@ img {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
-    /* --- 1. ESTRUTURA & FONTE --- */
-    body {
-        padding-top: 70px; /* Espaço para o header fixo */
-        font-size: 14px;   /* Reduz fonte base para caber mais */
-    }
-
-    .container {
-        padding: 0 20px;
-        width: 100%;
-        max-width: 100%; /* Garante que não vaze */
-    }
-
-    h1 { font-size: 28px !important; line-height: 1.2; }
-    h2 { font-size: 22px !important; }
-    h3 { font-size: 18px !important; }
-    
-    .section { padding: 40px 0; }
-
-    /* --- 2. HEADER & MENU (Hambúrguer) --- */
-    .main-header {
-        padding: 0 15px;
-        height: 70px;
-        justify-content: space-between;
-    }
-
-    .main-header .logo {
-        font-size: 20px; /* Logo um pouco menor */
-    }
-
-    .menu-hamburger {
-        display: flex;
-        z-index: 1100;
-        /* Ajuste fino do ícone */
-        margin-right: 0; 
-    }
-
+    /* 1. FORÇA O MENU HAMBÚRGUER */
     .main-nav {
         position: fixed;
-        top: 0;
+        top: 80px; /* Começa logo abaixo do header */
         right: -100%;
-        width: 85%; /* Deixa um pedacinho da tela de fundo visível */
-        height: 100vh;
+        width: 100%; /* Ocupa largura total no celular */
+        height: calc(100vh - 80px);
         background-color: #FFFFFF;
         flex-direction: column;
-        padding-top: 90px;
-        padding-left: 30px;
-        transition: right 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-        box-shadow: -5px 0 20px rgba(0,0,0,0.15);
-        z-index: 1000;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 40px;
+        transition: 0.3s;
+        border-top: 1px solid #eee;
+        overflow-y: auto; /* Habilita o scroll vertical se não couber */
+        max-height: 100vh; /* Garante que não passa da altura da tela */
+        padding-bottom: 50px; /* Espaço extra no final para chegar aos botões */
     }
 
     .main-nav.active {
@@ -1408,101 +1376,29 @@ img {
 
     .main-nav ul {
         flex-direction: column;
-        align-items: flex-start; /* Alinha à esquerda */
-        gap: 25px;
-    }
-
-    .main-nav a {
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-        display: block;
-        width: 100%;
-        padding: 10px 0;
-        border-bottom: 1px solid #f0f0f0; /* Linha separadora sutil */
-    }
-
-    .main-nav .btn-primary {
-        margin-top: 10px;
+        gap: 30px;
         text-align: center;
-        width: 90%; /* Botão largo no menu */
     }
 
-    /* --- 3. HOME PAGE --- */
-    .hero-banner {
-        height: auto;
-        min-height: 400px;
-        padding: 60px 20px;
-        text-align: center;
-        background-position: center;
-    }
-
-    .hero-box {
-        padding: 30px 20px;
-        width: 100%;
-    }
-
-    .hero-box h1 { font-size: 32px !important; }
-    .hero-box p { font-size: 16px; }
-
-    /* --- 4. GRIDS (Cards um embaixo do outro) --- */
-    .campaign-grid,
-    .testimonials-grid,
-    .impact-grid,
-    .participation-grid,
-    .faq-grid,
-    .actions-grid,
-    .profile-grid {
-        grid-template-columns: 1fr !important; /* Força coluna única */
-        gap: 25px;
-    }
-
-    /* Ajuste de Imagens nos Cards */
-    .campaign-card .campaign-image {
-        height: 180px; /* Altura fixa para não ficar gigante */
-    }
-
-    /* --- 5. FORMULÁRIOS (Melhor uso de espaço) --- */
-    .form-styled {
-        padding: 20px;
+    .menu-hamburger {
+        display: flex; /* Mostra os tracinhos */
     }
     
-    .form-styled input, 
-    .form-styled select, 
-    .form-styled textarea {
-        font-size: 16px; /* Evita zoom automático no iPhone */
-        padding: 12px;
+    .menu-hamburger span {
+        background-color: #333; /* Garante que os traços são pretos */
     }
 
-    /* --- 6. PÁGINA DE DETALHES --- */
-    .detail-content {
-        padding: 20px;
-    }
+    /* 2. AJUSTES GERAIS */
+    h1 { font-size: 28px !important; }
     
-    .detail-dates {
-        flex-direction: column;
-        gap: 10px;
-        text-align: left;
+    /* Transforma grids em coluna única */
+    .campaign-grid, .testimonials-grid, .impact-grid, .participation-grid, .faq-grid, .actions-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px;
     }
 
-    .event-card, .donation-card, .support-card {
-        padding: 15px;
-    }
-
-    /* Botões full-width no mobile são mais fáceis de clicar */
-    .participate-cta button {
-        width: 100%;
-    }
-
-    /* --- 7. MODAL --- */
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-        margin: 0 auto;
-    }
-    
-    .pix-key {
-        font-size: 16px; /* Reduz fonte para caber */
-        word-break: break-all; /* Quebra se for longo */
+    .container {
+        width: 90% !important;
+        padding: 0;
     }
 }
