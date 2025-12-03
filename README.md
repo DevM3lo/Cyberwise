@@ -10,8 +10,7 @@
 
 | Aplicação | Link |
 | :--- | :--- |
-| **🖥️ Site** | [https://cyberwise-eight.vercel.app](cyberwise-eight.vercel.app) | 
-| **😎 Admin**| [https://cyberwise-api.onrender.com/admin/](https://cyberwise-api.onrender.com/admin/) |
+| **🖥️ Site** | [https://cyberwise-eight.vercel.app](cyberwise-eight.vercel.app) |
 
 
 ---
