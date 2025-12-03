@@ -5,7 +5,6 @@
 ![Status](https://img.shields.io/badge/Status-Concluído-success)
 ![Python](https://img.shields.io/badge/Backend-Django%20REST-blue)
 ![Frontend](https://img.shields.io/badge/Frontend-JavaScript%20Vanilla-yellow)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-336791)
 
 ## 🔗 Links de Acesso (Deploy)
 
