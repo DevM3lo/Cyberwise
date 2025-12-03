@@ -1,44 +1,67 @@
 # 🌐 CyberWise - Plataforma de Mobilização Social
 
-Uma aplicação Full-Stack para conectar cidadãos a causas sociais, permitindo gestão de campanhas, doações, eventos e pedidos de ajuda comunitária.
+> **Uma solução Full-Stack para conectar cidadãos, ONGs e causas sociais através da tecnologia.**
 
-![Status](https://img.shields.io/badge/Status-Concluído-green)
+![Status](https://img.shields.io/badge/Status-Concluído-success)
 ![Python](https://img.shields.io/badge/Backend-Django%20REST-blue)
 ![Frontend](https://img.shields.io/badge/Frontend-JavaScript%20Vanilla-yellow)
+![Database](https://img.shields.io/badge/Database-PostgreSQL-336791)
 
-## 🚀 Funcionalidades
+## 🔗 Links de Acesso (Deploy)
 
-- **Autenticação Completa:** Registro, Login e Logout (com Token Auth).
-- **Gestão de Campanhas:** Listagem, detalhes, imagens de capa e contagem de participantes.
-- **Interatividade:**
-  - Botão "Participar/Sair" em tempo real.
-  - Mural de Comentários para discussão.
-  - Checklist interativo de Cidadania Digital.
-- **Ações Sociais:**
-  - Formulário de Doações (Financeiras/Materiais).
-  - Sistema de Pedidos de Ajuda (Conectado ao perfil do usuário).
-  - Lista de Instituições Parceiras.
-- **Painel do Usuário:** Histórico pessoal de doações, pedidos e campanhas.
+| Aplicação | Link |
+| :--- | :--- |
+| **🖥️ Site** | [https://cyberwise-eight.vercel.app](cyberwise-eight.vercel.app) | 
+
+
+---
+
+## 🚀 Funcionalidades do Projeto
+
+O CyberWise foi desenvolvido para atender aos requisitos de um sistema de gestão de serviços sociais/doações (Categoria A).
+
+### 👤 Para o Usuário
+* **Autenticação Completa:** Registro e Login via Token (JWT/AuthToken).
+* **Painel do Usuário:** Histórico pessoal de doações, campanhas que participa e pedidos de ajuda.
+* **Interatividade em Tempo Real:**
+    * Botão "Participar/Sair" de campanhas sem recarregar a página.
+    * Mural de Comentários para discussão nas campanhas.
+    * Checklist de Cidadania Digital interativo.
+* **Fluxo de Doação:**
+    * Doação Financeira (Geração de Modal com Chave PIX).
+    * Doação Material (Formulário dinâmico).
+    * Redirecionamento automático para o "Recibo" no perfil.
+
+### 🛠️ Para o Administrador (Gestão)
+* **Gestão de Conteúdo:** Cadastro de Campanhas, Eventos, Instituições e Depoimentos via Django Admin.
+* **Upload de Mídia:** Integração com **Cloudinary** para armazenamento persistente de imagens na nuvem.
+* **Moderação:** Visualização de todos os pedidos de ajuda e doações recebidas.
+
+---
 
 ## 🛠️ Tecnologias Utilizadas
 
-### Backend (API)
-- **Python & Django:** Estrutura principal.
-- **Django Rest Framework (DRF):** Criação da API RESTful.
-- **dj-rest-auth & AllAuth:** Sistema de autenticação e tokens.
-- **SQLite:** Banco de dados (ambiente de desenvolvimento).
+### Backend (Server-side)
+* **Python & Django 5:** Framework principal.
+* **Django REST Framework (DRF):** Construção da API RESTful.
+* **PostgreSQL:** Banco de dados de produção (Render).
+* **SQLite:** Banco de dados de desenvolvimento (Local).
+* **dj-rest-auth & AllAuth:** Sistema robusto de autenticação.
+* **Cloudinary:** Armazenamento de imagens na nuvem.
+* **WhiteNoise:** Gestão de arquivos estáticos em produção.
 
-### Frontend (Cliente)
-- **HTML5 & CSS3:** Estrutura e estilização responsiva.
-- **JavaScript (Vanilla):** Consumo de API, manipulação de DOM e lógica assíncrona (Fetch API).
+### Frontend (Client-side)
+* **HTML5 & CSS3:** Layout responsivo (Mobile-First) e customizado.
+* **JavaScript (Vanilla):** Lógica de consumo de API, manipulação de DOM e gestão de estado assíncrono (`async/await`).
+* **Fetch API:** Comunicação com o backend.
 
-## 📦 Como Rodar o Projeto
+---
 
-### Pré-requisitos
-- Python 3.8+ instalado.
-- Git instalado.
+## 📦 Como Rodar Localmente
+
+Se quiser rodar este projeto no seu computador:
 
 ### 1. Clone o repositório
 ```bash
-git clone [https://github.com/devm3lo/CyberWise.git](https://github.com/devm3lo/CyberWise.git)
+git clone [https://github.com/DevM3lo/Cyberwise.git](https://github.com/DevM3lo/Cyberwise.git)
 cd CyberWise
