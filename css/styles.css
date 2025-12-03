@@ -1365,6 +1365,9 @@ img {
         padding-top: 40px;
         transition: 0.3s;
         border-top: 1px solid #eee;
+        overflow-y: auto; /* Habilita o scroll vertical se não couber */
+        max-height: 100vh; /* Garante que não passa da altura da tela */
+        padding-bottom: 50px; /* Espaço extra no final para chegar aos botões */
     }
 
     .main-nav.active {
